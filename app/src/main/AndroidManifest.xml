@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Healthcare">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Admin Section -->
+        <activity
+            android:name=".admin_section.AdminDashboardActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Appointments Section -->
+        <activity
+            android:name=".appts_section.AppointmentsActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Doctors Section -->
+        <activity
+            android:name=".doctors_section.DoctorsActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- More Section Activities -->
+        <activity
+            android:name=".more_section.DepartmentsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".more_section.ReportsAnalyticsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".more_section.AuditLogActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".more_section.PrescriptionsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".more_section.SettingsProfileActivity"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

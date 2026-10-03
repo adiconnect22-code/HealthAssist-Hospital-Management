@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Healthcare Admin</string>
+    <string name="admin_dashboard_title">Health Assist</string>
+    <string name="hospital_subtitle">Dashboard</string>
+    <string name="btn_done">Done</string>
+    <string name="btn_close">Close</string>
+    <string name="view_all">View All</string>
+    <string name="stats_section_title">Key Metrics</string>
+    <string name="orders_section_title">Recent Appointments</string>
+    <string name="no_orders_found">No appointments found</string>
+    <string name="quick_actions_title">Quick Admin Actions</string>
+    <string name="quick_action_patients">Patients</string>
+    <string name="quick_action_doctors">Doctors</string>
+    <string name="analytics_section_title">Hospital Analytics &amp; Trends</string>
+    <string name="loading_data">Fetching database data...</string>
+    <string name="order_details_title">Order Details</string>
+    <string name="btn_approve">Approve</string>
+    <string name="btn_reject">Reject</string>
+    <string name="patient_name_label">Patient Name:</string>
+    <string name="doctor_name_label">Doctor Name:</string>
+    <string name="order_items_label">Ordered Items:</string>
+    <string name="order_amount_label">Total Amount:</string>
+    <string name="order_date_label">Order Date:</string>
+    <string name="order_status_label">Status:</string>
+    <string name="order_notes_label">Notes / Instructions:</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_appts">Appts</string>
+    <string name="nav_doctors">Doctors</string>
+    <string name="nav_more">More</string>
+</resources>

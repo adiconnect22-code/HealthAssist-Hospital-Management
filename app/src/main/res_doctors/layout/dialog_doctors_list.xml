@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="@drawable/bg_popup_rounded"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Available Doctors"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/btnDoctorsClose"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:contentDescription="@string/btn_close"
+            android:src="@drawable/ic_close"
+            app:tint="@color/text_secondary" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="• Dr. Sarah Smith — Cardiology (On Duty)\n• Dr. Mehta — Cardiology (On Duty)\n• Dr. Iyer — Orthopedics (On Duty)\n• Dr. David Lee — Orthopedics (On Duty)\n• Dr. Emily Davis — Dermatology (On Duty)\n• Dr. Arjun Patel — Cardiology (On Duty)\n• Dr. Robert Johnson — Neurology (On Duty)\n• Dr. Priya Sharma — Pediatrics (On Duty)"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDoneDoctors"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/teal_primary"
+        android:text="@string/btn_done"
+        android:textColor="@color/white"
+        app:cornerRadius="12dp" />
+
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Hospital Sharp Blue & Light Blue Palette -->
+    <color name="teal_primary">#2563EB</color> <!-- Sharp Royal Blue -->
+    <color name="teal_primary_variant">#1E3A8A</color> <!-- Deep Navy Blue -->
+    <color name="teal_light">#E0F2FE</color> <!-- Sharp Light Ice Blue -->
+    <color name="teal_accent">#0284C7</color> <!-- Sharp Sky Blue -->
+
+    <!-- Backgrounds -->
+    <color name="bg_main">#F0F6FF</color> <!-- Sharp Light Blue Tint Page Background -->
+    <color name="bg_card">#FFFFFF</color>
+    <color name="bg_surface_variant">#E0E7FF</color> <!-- Soft Ice Blue -->
+    <color name="header_bg">#1B2E63</color>
+
+    <!-- Stat Card Accent Backgrounds -->
+    <color name="stat_bg_blue">#E0F2FE</color>
+    <color name="stat_icon_blue">#0284C7</color>
+    <color name="stat_bg_green">#DBEAFE</color>
+    <color name="stat_icon_green">#2563EB</color>
+    <color name="stat_bg_orange">#FFF3E0</color>
+    <color name="stat_icon_orange">#F57C00</color>
+    <color name="stat_bg_purple">#F3E5F5</color>
+    <color name="stat_icon_purple">#7B1FA2</color>
+
+    <!-- Status Colors (Sharp Blue & Light Blue Tones) -->
+    <color name="status_pending_bg">#FFF8E1</color>
+    <color name="status_pending_text">#F57F17</color>
+    <color name="status_approved_bg">#E0F2FE</color>
+    <color name="status_approved_text">#0284C7</color>
+    <color name="status_rejected_bg">#FFEBEE</color>
+    <color name="status_rejected_text">#C62828</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_hint">#94A3B8</color>
+    <color name="divider_color">#E2E8F0</color>
+
+    <!-- Bottom Navigation Colors -->
+    <color name="bottom_nav_selected">#1D4ED8</color> <!-- Vibrant Electric Royal Blue -->
+    <color name="bottom_nav_unselected">#334155</color> <!-- Crisp Dark Charcoal -->
+</resources>
