@@ -1,0 +1,152 @@
+app/src/main/
+├── AndroidManifest.xml                        (Declares all Admin & User Activities)
+│
+├── java/com/example/healthcare/              (JAVA SOURCE CODE)
+│   ├── MainActivity.java                     (App Entry Point & Role Switcher)
+│   │
+│   ├── admin_section/                        (ADMIN DASHBOARD)
+│   │   ├── AdminDashboardActivity.java       (Home Dashboard Activity with Health Assist logo)
+│   │   └── AppointmentsDonutChartView.java   (Custom Canvas Donut Ring Chart)
+│   │
+│   ├── appts_section/                        (ADMIN APPOINTMENTS)
+│   │   ├── AppointmentsActivity.java         (Appointments Management Activity)
+│   │   ├── AppointmentModel.java             (Appointment Data Model)
+│   │   ├── AppointmentAdapter.java           (All Appointments List Adapter)
+│   │   ├── RecentAppointmentAdapter.java     (Home Recent Appointments Adapter)
+│   │   ├── AppointmentDetailsDialog.java     (Appointment Details Popup)
+│   │   └── AppointmentsListDialog.java       (Appointments Overview Popup)
+│   │
+│   ├── doctors_section/                      (ADMIN MANAGE DOCTORS)
+│   │   ├── DoctorsActivity.java              (Manage Doctors Screen)
+│   │   ├── DoctorModel.java                  (Doctor Data Model & Leave Check)
+│   │   ├── DoctorAdapter.java                (Doctor List Item Adapter)
+│   │   ├── AddEditDoctorDialog.java          (Add / Edit Doctor Popup)
+│   │   ├── MarkDoctorUnavailableDialog.java  (Mark Doctor Leave Range Popup)
+│   │   └── DoctorsListDialog.java            (Available Doctors Overview Popup)
+│   │
+│   ├── more_section/                         (ADMIN MORE SECTION)
+│   │   ├── MoreMenuDialog.java               (More Navigation Menu Popup)
+│   │   ├── DepartmentsActivity.java          (Departments Management)
+│   │   ├── DepartmentModel.java              (Department Data Model)
+│   │   ├── DepartmentAdapter.java            (Department Item Adapter)
+│   │   ├── AddEditDepartmentDialog.java      (Add / Edit Department Popup)
+│   │   ├── ReportsAnalyticsActivity.java     (Reports & Weekly Chart)
+│   │   ├── ExportCsvDialog.java              (Export CSV to Downloads Popup)
+│   │   ├── PrescriptionsActivity.java        (Prescriptions Management)
+│   │   ├── PrescriptionModel.java            (Prescription Data Model)
+│   │   ├── PrescriptionAdapter.java          (Prescription Item Adapter)
+│   │   ├── AddPrescriptionDialog.java        (Add Prescription Popup with Upload)
+│   │   ├── SettingsProfileActivity.java      (Settings & Dark Mode Toggle)
+│   │   ├── AdminDetailsDialog.java           (Administrator Details Popup)
+│   │   └── AuditLogActivity.java             (System Audit Log Screen)
+│   │
+│   ├── common/                               (SHARED ADMIN DIALOGS)
+│   │   ├── NotificationListDialog.java       (Notifications Popup)
+│   │   ├── PatientsListDialog.java           (Patients Summary Popup)
+│   │   └── RevenueBreakdownDialog.java       (Revenue Breakdown Popup)
+│   │
+│   └── user/                                 (USER / PATIENT SECTION)
+│       ├── UserDashboardActivity.java        (Patient Dashboard Screen)
+│       ├── UserDoctorsActivity.java          (Find & View Doctors Screen)
+│       ├── UserDoctorDetailsDialog.java      (Doctor Details & Bio Popup)
+│       ├── BookAppointmentActivity.java      (Book Appointment Form Screen)
+│       ├── UserMyAppointmentsActivity.java   (Patient Appointments History Screen)
+│       ├── UserPrescriptionsActivity.java    (Patient Prescriptions Screen)
+│       ├── UserProfileActivity.java          (Patient Profile & Switch Role Screen)
+│       └── UserNotificationsDialog.java      (Patient Notifications Popup)
+│
+├── res_admin/layout/                         (ADMIN DASHBOARD LAYOUTS)
+│   ├── activity_admin_dashboard.xml          (Dashboard Layout)
+│   ├── item_hospital_stat_card.xml           (Key Metric Card Item)
+│   ├── item_admin_appointment.xml            (Recent Appointment Card Item)
+│   └── item_admin_order.xml                  (Admin Order Card Item)
+│
+├── res_appts/layout/                         (ADMIN APPOINTMENTS LAYOUTS)
+│   ├── activity_appointments.xml             (Appointments Layout with Tabs)
+│   ├── item_appointment_all.xml              (Appointment Item Card Layout)
+│   ├── dialog_appointment_details.xml        (Appointment Details Popup Layout)
+│   └── dialog_appointments_list.xml          (Appointments Summary Popup Layout)
+│
+├── res_doctors/layout/                       (ADMIN DOCTORS LAYOUTS)
+│   ├── activity_doctors.xml                  (Manage Doctors Screen Layout)
+│   ├── item_doctor_card.xml                  (Doctor Card with Initials & Badges)
+│   ├── dialog_add_edit_doctor.xml            (Add / Edit Doctor Popup Layout)
+│   ├── dialog_mark_doctor_unavailable.xml    (Mark Doctor Unavailable Popup Layout)
+│   └── dialog_doctors_list.xml               (Doctors Overview Popup Layout)
+│
+├── res_more/layout/                          (ADMIN MORE SECTION LAYOUTS)
+│   ├── dialog_more_menu.xml                  (More Options Navigation Popup)
+│   ├── activity_departments.xml              (Departments Layout)
+│   ├── dialog_add_edit_department.xml        (Add / Edit Department Popup)
+│   ├── item_department.xml                   (Department Card Item)
+│   ├── activity_reports_analytics.xml        (Reports & Bar Chart Layout)
+│   ├── dialog_export_csv.xml                 (Export CSV Popup)
+│   ├── activity_prescriptions.xml            (Prescriptions Management Layout)
+│   ├── dialog_add_prescription.xml           (Add Prescription Popup)
+│   ├── item_prescription.xml                 (Prescription Card Item)
+│   ├── activity_settings_profile.xml         (Settings & Dark Mode Layout)
+│   ├── dialog_admin_details.xml              (Administrator Details Popup)
+│   └── activity_audit_log.xml                (Audit Log Screen Layout)
+│
+├── res_common/layout/                        (SHARED ADMIN LAYOUTS)
+│   ├── dialog_notifications.xml              (Notifications Popup Layout)
+│   ├── dialog_patients_list.xml              (Patients Summary Popup Layout)
+│   └── dialog_revenue_breakdown.xml          (Revenue Breakdown Popup Layout)
+│
+├── res_user/layout/                          (USER / PATIENT LAYOUTS)
+│   ├── activity_user_dashboard.xml           (Patient Dashboard Layout)
+│   ├── activity_user_doctors.xml             (View Doctors Layout)
+│   ├── dialog_user_doctor_details.xml        (Doctor Profile Details Popup)
+│   ├── activity_book_appointment.xml         (Book Appointment Form Layout)
+│   ├── activity_user_my_appointments.xml     (My Appointments Layout)
+│   ├── activity_user_prescriptions.xml       (My Prescriptions Layout)
+│   ├── activity_user_profile.xml             (My Profile & Settings Layout)
+│   ├── dialog_user_notifications.xml         (Patient Notifications Popup)
+│   ├── item_user_doctor.xml                  (Patient Doctor Card Item)
+│   ├── item_user_appointment.xml             (Patient Appointment Card Item)
+│   └── item_user_prescription.xml            (Patient Prescription Card Item)
+│
+└── res/                                      (SHARED APP RESOURCES)
+    ├── layout/activity_main.xml              (Main Role Selector Layout)
+    ├── menu/
+    │   ├── bottom_nav_menu.xml               (Admin Bottom Navigation Menu)
+    │   └── user_bottom_nav_menu.xml          (User Bottom Navigation Menu)
+    ├── color/
+    │   └── bottom_nav_color.xml              (Bottom Navigation Dynamic Tint Selector)
+    ├── values/
+    │   ├── colors.xml                        (Light Mode Color Palette)
+    │   ├── strings.xml                       (String Resources)
+    │   └── themes.xml                        (Light Mode Theme & Bottom Nav Text Styles)
+    ├── values-night/
+    │   ├── colors.xml                        (Dark Mode Color Palette)
+    │   └── themes.xml                        (Dark Mode Theme)
+    └── drawable/                             (Vector Drawables & Background Shapes)
+        ├── bg_bottom_nav.xml
+        ├── bg_card_rounded.xml
+        ├── bg_dashboard_header.xml
+        ├── bg_dashed_border.xml
+        ├── bg_popup_rounded.xml
+        ├── bg_status_badge.xml
+        ├── ic_health_assist_logo.xml
+        ├── ic_nav_home.xml
+        ├── ic_nav_appts.xml
+        ├── ic_nav_doctors.xml
+        ├── ic_nav_more.xml
+        ├── ic_patients.xml
+        ├── ic_doctors.xml
+        ├── ic_orders.xml
+        ├── ic_revenue.xml
+        ├── ic_edit_pencil.xml
+        ├── ic_delete_trash.xml
+        ├── ic_calendar.xml
+        ├── ic_close.xml
+        ├── ic_chevron_right.xml
+        ├── ic_notification.xml
+        ├── ic_profile.xml
+        ├── ic_download.xml
+        ├── ic_more_departments.xml
+        ├── ic_more_reports.xml
+        ├── ic_more_audit.xml
+        ├── ic_more_prescriptions.xml
+        ├── ic_more_settings.xml
+        └── ic_more_logout.xml
