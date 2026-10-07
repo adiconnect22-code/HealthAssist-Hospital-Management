@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFF</color>
+    <color name="white_12">#1FFFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
+
+    <color name="primary">#2F6F62</color>
+    <color name="primary_dark">#1F4A41</color>
+    <color name="header_bg">#2F6F62</color> <!-- Medical Green Header for Patient -->
+    <color name="patient_primary">#2F6F62</color>
+    <color name="patient_accent">#10B981</color>
+    <color name="bg">#F4F6F5</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="border">#E3E8E6</color>
+    <color name="text_primary">#1F2A28</color>
+    <color name="text_secondary">#6B7774</color>
+    <color name="hint">#3B4542</color>
+    <color name="nav_inactive">#7B8683</color>
+    <color name="status_bar">#F4F6F5</color>
+    <color name="chip_selected_bg">#E3EEEA</color>
+    <color name="avatar_bg">#E3EEEA</color>
+    <color name="tab_container">#E6EBE9</color>
+    <color name="card_start">#2F6F62</color>
+    <color name="card_end">#245247</color>
+
+    <color name="badge_green_bg">#E3EFEB</color>
+    <color name="badge_green_text">#2F6F62</color>
+    <color name="badge_blue_bg">#E3E8F6</color>
+    <color name="badge_blue_text">#34478F</color>
+    <color name="badge_amber_bg">#FBEFD9</color>
+    <color name="badge_amber_text">#B7791F</color>
+    <color name="badge_red_bg">#FBE3E0</color>
+    <color name="badge_red_text">#B3433A</color>
+    <color name="danger">#B3433A</color>
+    <color name="amber">#B7791F</color>
+    <color name="star">#E3A21A</color>
+
+    <!-- ===== Admin module ===== -->
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 
     <!-- Hospital Sharp Blue & Light Blue Palette -->
     <color name="teal_primary">#2563EB</color> <!-- Sharp Royal Blue -->
@@ -13,7 +49,7 @@
     <color name="bg_main">#F0F6FF</color> <!-- Sharp Light Blue Tint Page Background -->
     <color name="bg_card">#FFFFFF</color>
     <color name="bg_surface_variant">#E0E7FF</color> <!-- Soft Ice Blue -->
-    <color name="header_bg">#1B2E63</color>
+    <color name="admin_header_bg">#1B2E63</color>
 
     <!-- Stat Card Accent Backgrounds -->
     <color name="stat_bg_blue">#E0F2FE</color>
@@ -34,8 +70,8 @@
     <color name="status_rejected_text">#C62828</color>
 
     <!-- Text Colors -->
-    <color name="text_primary">#0F172A</color>
-    <color name="text_secondary">#475569</color>
+    <color name="admin_text_primary">#0F172A</color>
+    <color name="admin_text_secondary">#475569</color>
     <color name="text_hint">#94A3B8</color>
     <color name="divider_color">#E2E8F0</color>
 

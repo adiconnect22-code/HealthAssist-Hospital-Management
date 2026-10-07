@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Healthcare Admin</string>
+    <string name="app_name">HealthAppointment</string>
+
+    <!-- ===== Admin module ===== -->
     <string name="admin_dashboard_title">Health Assist</string>
     <string name="hospital_subtitle">Dashboard</string>
     <string name="btn_done">Done</string>

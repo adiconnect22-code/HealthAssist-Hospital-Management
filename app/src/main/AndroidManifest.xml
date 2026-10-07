@@ -12,53 +12,79 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Healthcare">
 
+        <!-- Splash Screen (App Launcher) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.Healthcare">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Admin Section -->
+        <!-- User Authentication Activities -->
         <activity
-            android:name=".admin_section.AdminDashboardActivity"
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- User Main Activity (Houses User Home, Appts, Notifications, Profile Fragments) -->
+        <activity
+            android:name=".MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Appointments Section -->
+        <!-- Admin Authentication -->
         <activity
-            android:name=".appts_section.AppointmentsActivity"
+            android:name=".admin.AdminLoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".admin.AdminMainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Admin Section Activities -->
+        <activity
+            android:name=".admin.admin_section.AdminDashboardActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Doctors Section -->
         <activity
-            android:name=".doctors_section.DoctorsActivity"
+            android:name=".admin.appts_section.AppointmentsActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- More Section Activities -->
         <activity
-            android:name=".more_section.DepartmentsActivity"
+            android:name=".admin.doctors_section.DoctorsActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".admin.more_section.DepartmentsActivity"
             android:exported="false" />
 
         <activity
-            android:name=".more_section.ReportsAnalyticsActivity"
+            android:name=".admin.more_section.ReportsAnalyticsActivity"
             android:exported="false" />
 
         <activity
-            android:name=".more_section.AuditLogActivity"
+            android:name=".admin.more_section.AuditLogActivity"
             android:exported="false" />
 
         <activity
-            android:name=".more_section.PrescriptionsActivity"
+            android:name=".admin.more_section.PrescriptionsActivity"
             android:exported="false" />
 
         <activity
-            android:name=".more_section.SettingsProfileActivity"
+            android:name=".admin.more_section.SettingsProfileActivity"
             android:exported="false" />
 
     </application>

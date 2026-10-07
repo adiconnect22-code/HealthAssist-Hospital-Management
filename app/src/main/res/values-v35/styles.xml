@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- targetSdk 35 enforces edge-to-edge; keep the patient screens laid out exactly as before. -->
+    <style name="Theme.HealthAppointment" parent="Base.Theme.HealthAppointment">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
+</resources>

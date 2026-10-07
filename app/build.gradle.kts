@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -18,14 +19,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            res.srcDirs(
-                "src/main/res",
-                "src/main/res_admin",
-                "src/main/res_appts",
-                "src/main/res_doctors",
-                "src/main/res_more",
-                "src/main/res_common"
-            )
+            res.srcDirs("src/main/res")
         }
     }
 
@@ -49,6 +43,14 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+
+    // Firebase BoM and SDKs
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-storage")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
