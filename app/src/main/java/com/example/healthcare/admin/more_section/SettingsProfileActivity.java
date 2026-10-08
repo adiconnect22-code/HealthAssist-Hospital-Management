@@ -1,10 +1,10 @@
 package com.example.healthcare.admin.more_section;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,15 +21,21 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.healthcare.R;
 import com.example.healthcare.admin.admin_section.AdminDashboardActivity;
 import com.example.healthcare.admin.appts_section.AppointmentsActivity;
-import com.example.healthcare.admin.doctors_section.DoctorsListDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Activity inside 'more_section' folder for Settings & Profile.
+ * Connected directly to Firebase Cloud Firestore 'settings/hospital_info' collection.
  */
 public class SettingsProfileActivity extends AppCompatActivity {
+
+    private static final String TAG = "SettingsProfileActivity";
 
     private EditText etHospitalName;
     private EditText etHospitalEmail;
@@ -43,10 +49,14 @@ public class SettingsProfileActivity extends AppCompatActivity {
     private MaterialButton btnLogout;
     private BottomNavigationView bottomNavigationView;
 
+    private FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_profile);
+
+        db = FirebaseFirestore.getInstance();
 
         initViews();
         setupSeamlessBottomNavigation();
@@ -178,11 +188,47 @@ public class SettingsProfileActivity extends AppCompatActivity {
     }
 
     private void fetchSettingsFromDatabase() {
-        // TODO: Database connection logic
+        db.collection("settings").document("hospital_info")
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc != null && doc.exists()) {
+                        String name = doc.getString("hospitalName");
+                        String email = doc.getString("hospitalEmail");
+                        String phone = doc.getString("hospitalPhone");
+                        String hours = doc.getString("workingDays");
+
+                        if (name != null && etHospitalName != null) etHospitalName.setText(name);
+                        if (email != null && etHospitalEmail != null) etHospitalEmail.setText(email);
+                        if (phone != null && etHospitalPhone != null) etHospitalPhone.setText(phone);
+                        if (hours != null && etWorkingDays != null) etWorkingDays.setText(hours);
+                    } else {
+                        saveSettingsToDatabase();
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching hospital settings from Firestore", e));
     }
 
     private void saveSettingsToDatabase() {
-        // TODO: Database connection logic
+        String name = (etHospitalName != null && etHospitalName.getText() != null)
+                ? etHospitalName.getText().toString().trim() : "Health Assist Manipal";
+        String email = (etHospitalEmail != null && etHospitalEmail.getText() != null)
+                ? etHospitalEmail.getText().toString().trim() : "contact@manipal.healthassist.com";
+        String phone = (etHospitalPhone != null && etHospitalPhone.getText() != null)
+                ? etHospitalPhone.getText().toString().trim() : "+91 80 2528 8333";
+        String hours = (etWorkingDays != null && etWorkingDays.getText() != null)
+                ? etWorkingDays.getText().toString().trim() : "Mon - Sat: 08:00 AM - 08:00 PM (24/7 Emergency)";
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("hospitalName", name);
+        data.put("hospitalEmail", email);
+        data.put("hospitalPhone", phone);
+        data.put("workingDays", hours);
+        data.put("updatedAt", System.currentTimeMillis());
+
+        db.collection("settings").document("hospital_info")
+                .set(data)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Hospital settings saved to Firestore"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error saving hospital settings to Firestore", e));
     }
 
     private void setupSeamlessBottomNavigation() {

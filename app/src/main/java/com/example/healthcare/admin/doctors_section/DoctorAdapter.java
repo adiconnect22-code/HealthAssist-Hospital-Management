@@ -135,6 +135,9 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.DoctorView
                 resId = R.drawable.doc_male_1;
             }
             holder.imgDoctorPhoto.setImageResource(resId);
+            holder.imgDoctorPhoto.setOnClickListener(v -> {
+                if (listener != null) listener.onEditDoctor(item);
+            });
         }
 
         holder.itemView.setOnClickListener(v -> {

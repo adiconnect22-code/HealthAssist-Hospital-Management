@@ -35,7 +35,7 @@ import java.util.Map;
 
 /**
  * Activity in 'appts_section' for managing Hospital Appointments.
- * Fully connected to Firebase Cloud Firestore real-time database with 12-hour automated deletion for cancelled appointments.
+ * Fully connected to Firebase Cloud Firestore real-time database with Admin approval workflow and 12-hour auto-deletion.
  */
 public class AppointmentsActivity extends AppCompatActivity implements AppointmentAdapter.OnAppointmentActionListener, AppointmentDetailsDialog.OnAppointmentStatusChangeListener {
 
@@ -284,28 +284,11 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
     }
 
     @Override
-    public void onApproveAppointment(AppointmentModel appointment) {
+    public void onConfirmAppointment(AppointmentModel appointment) {
         if (appointment == null) return;
         appointment.setStatus("Confirmed");
         saveAppointmentToDatabase(appointment);
-        Toast.makeText(this, "✓ Appointment Approved & Confirmed for " + appointment.getPatientName(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRejectAppointment(AppointmentModel appointment) {
-        if (appointment == null) return;
-        appointment.setStatus("Cancelled");
-        appointment.setCancelledTimestamp(System.currentTimeMillis());
-        saveAppointmentToDatabase(appointment);
-        Toast.makeText(this, "✕ Appointment Cancelled (Will be auto-deleted in 12 hours)", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCompleteAppointment(AppointmentModel appointment) {
-        if (appointment == null) return;
-        appointment.setStatus("Completed");
-        saveAppointmentToDatabase(appointment);
-        Toast.makeText(this, "✓ Appointment Marked as Completed for " + appointment.getPatientName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "✓ Appointment Confirmed & Moved to Upcoming!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -315,6 +298,24 @@ public class AppointmentsActivity extends AppCompatActivity implements Appointme
         appointment.setCancelledTimestamp(System.currentTimeMillis());
         saveAppointmentToDatabase(appointment);
         Toast.makeText(this, "✕ Appointment Cancelled (Visible for 12 hours before auto-delete)", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onApproveAppointment(AppointmentModel appointment) {
+        onConfirmAppointment(appointment);
+    }
+
+    @Override
+    public void onRejectAppointment(AppointmentModel appointment) {
+        onCancelAppointment(appointment);
+    }
+
+    @Override
+    public void onCompleteAppointment(AppointmentModel appointment) {
+        if (appointment == null) return;
+        appointment.setStatus("Completed");
+        saveAppointmentToDatabase(appointment);
+        Toast.makeText(this, "✓ Appointment Marked as Completed for " + appointment.getPatientName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

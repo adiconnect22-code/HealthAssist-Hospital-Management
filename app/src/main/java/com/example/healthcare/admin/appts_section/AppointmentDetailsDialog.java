@@ -21,11 +21,12 @@ import com.example.healthcare.admin.more_section.PrescriptionModel;
 import com.google.android.material.button.MaterialButton;
 
 /**
- * DialogFragment in 'appts_section' folder showing full Appointment details.
+ * DialogFragment in 'appts_section' folder showing full Appointment details with Confirm & Cancel action buttons.
  */
 public class AppointmentDetailsDialog extends DialogFragment {
 
     public interface OnAppointmentStatusChangeListener {
+        void onConfirmAppointment(AppointmentModel appointment);
         void onCancelAppointment(AppointmentModel appointment);
     }
 
@@ -76,7 +77,8 @@ public class AppointmentDetailsDialog extends DialogFragment {
         TextView tvTime = view.findViewById(R.id.tvDetailTime);
         TextView tvStatus = view.findViewById(R.id.tvDetailStatus);
 
-        MaterialButton btnCancel = view.findViewById(R.id.btnCancelAppt);
+        MaterialButton btnConfirmAppt = view.findViewById(R.id.btnConfirmAppt);
+        MaterialButton btnCancelAppt = view.findViewById(R.id.btnCancelAppt);
         MaterialButton btnAddPrescription = view.findViewById(R.id.btnAddPrescription);
         MaterialButton btnCloseBottom = view.findViewById(R.id.btnCloseDialog);
 
@@ -95,8 +97,36 @@ public class AppointmentDetailsDialog extends DialogFragment {
             String status = appointment.getStatus();
             if (tvStatus != null) tvStatus.setText(status);
 
-            if (status.equalsIgnoreCase("Completed")) {
-                if (btnCancel != null) btnCancel.setVisibility(View.GONE);
+            if (status.equalsIgnoreCase("Pending")) {
+                if (btnConfirmAppt != null) {
+                    btnConfirmAppt.setVisibility(View.VISIBLE);
+                    btnConfirmAppt.setOnClickListener(v -> {
+                        if (statusChangeListener != null) {
+                            statusChangeListener.onConfirmAppointment(appointment);
+                        } else {
+                            Toast.makeText(getContext(), "✓ Appointment Confirmed & Moved to Upcoming!", Toast.LENGTH_SHORT).show();
+                        }
+                        dismiss();
+                    });
+                }
+                if (btnCancelAppt != null) {
+                    btnCancelAppt.setVisibility(View.VISIBLE);
+                    btnCancelAppt.setOnClickListener(v -> {
+                        if (statusChangeListener != null) {
+                            statusChangeListener.onCancelAppointment(appointment);
+                        } else {
+                            Toast.makeText(getContext(), "✕ Appointment Cancelled", Toast.LENGTH_SHORT).show();
+                        }
+                        dismiss();
+                    });
+                }
+                if (btnAddPrescription != null) btnAddPrescription.setVisibility(View.GONE);
+                if (btnCloseBottom != null) btnCloseBottom.setVisibility(View.GONE);
+            } else if (status.equalsIgnoreCase("Completed")) {
+                if (btnConfirmAppt != null) btnConfirmAppt.setVisibility(View.GONE);
+                if (btnCancelAppt != null) btnCancelAppt.setVisibility(View.GONE);
+                if (btnCloseBottom != null) btnCloseBottom.setVisibility(View.VISIBLE);
+
                 if (btnAddPrescription != null) {
                     btnAddPrescription.setVisibility(View.VISIBLE);
                     btnAddPrescription.setOnClickListener(v -> {
@@ -116,19 +146,21 @@ public class AppointmentDetailsDialog extends DialogFragment {
                         dismiss();
                     });
                 }
-            } else {
+            } else { // Confirmed / Cancelled
+                if (btnConfirmAppt != null) btnConfirmAppt.setVisibility(View.GONE);
                 if (btnAddPrescription != null) btnAddPrescription.setVisibility(View.GONE);
-                if (btnCancel != null) {
-                    btnCancel.setVisibility(View.VISIBLE);
-                    btnCancel.setOnClickListener(v -> {
+                if (btnCancelAppt != null) {
+                    btnCancelAppt.setVisibility(View.VISIBLE);
+                    btnCancelAppt.setOnClickListener(v -> {
                         if (statusChangeListener != null) {
                             statusChangeListener.onCancelAppointment(appointment);
                         } else {
-                            Toast.makeText(getContext(), "Appointment Cancelled", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "✕ Appointment Cancelled", Toast.LENGTH_SHORT).show();
                         }
                         dismiss();
                     });
                 }
+                if (btnCloseBottom != null) btnCloseBottom.setVisibility(View.VISIBLE);
             }
         }
     }

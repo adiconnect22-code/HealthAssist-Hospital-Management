@@ -1,6 +1,9 @@
 package com.example.healthcare.appointment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +12,44 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthcare.DialogHelper;
 import com.example.healthcare.HeaderHelper;
 import com.example.healthcare.MainActivity;
 import com.example.healthcare.R;
+import com.example.healthcare.admin.appts_section.AppointmentAdapter;
+import com.example.healthcare.admin.appts_section.AppointmentDetailsDialog;
+import com.example.healthcare.admin.appts_section.AppointmentModel;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
-public class AppointmentsFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Fragment in 'appointment' package for managing patient appointments.
+ * Connected directly to Firebase Cloud Firestore 'appointments' collection with zero hardcoded dummy values.
+ */
+public class AppointmentsFragment extends Fragment implements AppointmentAdapter.OnAppointmentActionListener {
+
+    private static final String TAG = "PatientApptsFragment";
     private static final String ARG_SUB = "sub";
 
     private TextView[] tabs;
-    private View[] panels;
+    private String[] tabStatuses = {"Upcoming", "Pending", "Completed", "Cancelled"};
+    private int selectedTabIndex = 0;
+
+    private RecyclerView rvAppointments;
+    private TextView tvNoAppointmentsMessage;
+
+    private AppointmentAdapter adapter;
+    private final List<AppointmentModel> patientApptList = new ArrayList<>();
+
+    private FirebaseFirestore db;
+    private ListenerRegistration apptsListener;
+    private String currentPatientName = "adithya";
 
     public static AppointmentsFragment newInstance(int subTab) {
         AppointmentsFragment f = new AppointmentsFragment();
@@ -38,43 +67,144 @@ public class AppointmentsFragment extends Fragment {
         final MainActivity main = (MainActivity) requireActivity();
         HeaderHelper.bind(main, v, "My Appointments", null, false, true);
 
+        db = FirebaseFirestore.getInstance();
+
+        SharedPreferences prefs = requireContext().getSharedPreferences("healthcare_patient", Context.MODE_PRIVATE);
+        currentPatientName = prefs.getString("patient_name", "adithya");
+
         tabs = new TextView[]{
                 v.findViewById(R.id.tabUpcoming), v.findViewById(R.id.tabPending),
                 v.findViewById(R.id.tabCompleted), v.findViewById(R.id.tabCancelled)};
-        panels = new View[]{
-                v.findViewById(R.id.panelUpcoming), v.findViewById(R.id.panelPending),
-                v.findViewById(R.id.panelCompleted), v.findViewById(R.id.panelCancelled)};
+
+        rvAppointments = v.findViewById(R.id.rvPatientAppointments);
+        tvNoAppointmentsMessage = v.findViewById(R.id.tvNoAppointmentsMessage);
+
+        setupRecyclerView();
 
         for (int i = 0; i < tabs.length; i++) {
             final int index = i;
-            tabs[i].setOnClickListener(x -> select(index));
+            tabs[i].setOnClickListener(x -> selectTab(index));
         }
 
-        v.findViewById(R.id.btnReschedule).setOnClickListener(x ->
-                DialogHelper.showReschedule(main, "Dr. Mehta"));
-        v.findViewById(R.id.btnWithdraw).setOnClickListener(x -> DialogHelper.showWithdraw(main));
+        int startTab = getArguments() != null ? getArguments().getInt(ARG_SUB, 0) : 0;
+        selectTab(startTab);
 
-        v.findViewById(R.id.btnRx1).setOnClickListener(x -> DialogHelper.showPrescription(main,
-                "Dr. Iyer", "20 Aug",
-                "Rest for 3 days, follow up in 2 weeks. Avoid salt-heavy food. "
-                        + "Prescribed: Tab. Paracetamol 500mg, twice daily."));
-        v.findViewById(R.id.btnRx2).setOnClickListener(x -> DialogHelper.showPrescription(main,
-                "Dr. Mehta", "10 Aug",
-                "Continue current medication. Blood pressure stable \u2014 recheck in 1 month."));
-        v.findViewById(R.id.btnRate1).setOnClickListener(x ->
-                DialogHelper.showRate(main, "Dr. Iyer \u00B7 Orthopedics"));
-        v.findViewById(R.id.btnRate2).setOnClickListener(x ->
-                DialogHelper.showRate(main, "Dr. Mehta \u00B7 Cardiology"));
+        setupFirestoreRealtimeListener();
 
-        int start = getArguments() != null ? getArguments().getInt(ARG_SUB, 0) : 0;
-        select(start);
         return v;
     }
 
-    private void select(int index) {
+    private void setupRecyclerView() {
+        if (rvAppointments != null) {
+            rvAppointments.setLayoutManager(new LinearLayoutManager(requireContext()));
+            adapter = new AppointmentAdapter(requireContext(), patientApptList, this);
+            rvAppointments.setAdapter(adapter);
+        }
+    }
+
+    private void selectTab(int index) {
+        selectedTabIndex = index;
         for (int i = 0; i < tabs.length; i++) {
             tabs[i].setSelected(i == index);
-            panels[i].setVisibility(i == index ? View.VISIBLE : View.GONE);
+        }
+
+        if (adapter != null) {
+            boolean isEmpty = adapter.filter("", tabStatuses[selectedTabIndex]);
+            if (isEmpty) {
+                if (tvNoAppointmentsMessage != null) tvNoAppointmentsMessage.setVisibility(View.VISIBLE);
+                if (rvAppointments != null) rvAppointments.setVisibility(View.GONE);
+            } else {
+                if (tvNoAppointmentsMessage != null) tvNoAppointmentsMessage.setVisibility(View.GONE);
+                if (rvAppointments != null) rvAppointments.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void setupFirestoreRealtimeListener() {
+        apptsListener = db.collection("appointments")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null || value == null) {
+                        Log.e(TAG, "Error fetching patient appointments", error);
+                        updateUI();
+                        return;
+                    }
+
+                    patientApptList.clear();
+                    for (DocumentSnapshot doc : value.getDocuments()) {
+                        try {
+                            String docPatient = doc.getString("patientName");
+                            if (docPatient == null) docPatient = doc.getString("patient");
+
+                            // Strict filter by logged-in patient name
+                            if (docPatient != null && docPatient.equalsIgnoreCase(currentPatientName)) {
+                                AppointmentModel model = new AppointmentModel();
+                                String id = doc.getId();
+
+                                model.setId(id);
+                                model.setPatientName(docPatient);
+                                model.setDoctorName(doc.getString("doctorName"));
+                                model.setDepartment(doc.getString("department"));
+                                model.setDate(doc.getString("date"));
+                                model.setTimeSlot(doc.getString("timeSlot"));
+                                model.setStatus(doc.getString("status"));
+                                model.setReason(doc.getString("reason"));
+
+                                Long cancelledTime = doc.getLong("cancelledTimestamp");
+                                if (cancelledTime != null) {
+                                    model.setCancelledTimestamp(cancelledTime);
+                                }
+
+                                patientApptList.add(model);
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing appointment document", e);
+                        }
+                    }
+
+                    updateUI();
+                });
+    }
+
+    private void updateUI() {
+        if (getActivity() != null) {
+            requireActivity().runOnUiThread(() -> {
+                if (adapter != null) {
+                    adapter.updateList(patientApptList);
+                    boolean isEmpty = adapter.filter("", tabStatuses[selectedTabIndex]);
+
+                    if (isEmpty || patientApptList.isEmpty()) {
+                        if (tvNoAppointmentsMessage != null) tvNoAppointmentsMessage.setVisibility(View.VISIBLE);
+                        if (rvAppointments != null) rvAppointments.setVisibility(View.GONE);
+                    } else {
+                        if (tvNoAppointmentsMessage != null) tvNoAppointmentsMessage.setVisibility(View.GONE);
+                        if (rvAppointments != null) rvAppointments.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onApproveAppointment(AppointmentModel appointment) {}
+
+    @Override
+    public void onRejectAppointment(AppointmentModel appointment) {}
+
+    @Override
+    public void onCompleteAppointment(AppointmentModel appointment) {}
+
+    @Override
+    public void onAppointmentClick(AppointmentModel appointment) {
+        if (appointment == null) return;
+        AppointmentDetailsDialog dialog = AppointmentDetailsDialog.newInstance(appointment);
+        dialog.show(getParentFragmentManager(), "AppointmentDetailsDialog");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (apptsListener != null) {
+            apptsListener.remove();
         }
     }
 

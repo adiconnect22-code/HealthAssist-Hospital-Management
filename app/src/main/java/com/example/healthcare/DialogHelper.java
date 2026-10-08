@@ -3,9 +3,12 @@ package com.example.healthcare;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +22,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
-/** Builds every modal dialog shown in the UI sketch. UI only - no data is stored. */
+/** Builds modal dialogs and saves live bookings directly to Firebase Cloud Firestore. */
 public final class DialogHelper {
 
     private DialogHelper() {
@@ -87,15 +94,11 @@ public final class DialogHelper {
     }
 
     private static String valueOr(TextView tv, String fallback) {
-        return tv.getTag() != null ? tv.getText().toString() : fallback;
+        return (tv != null && tv.getTag() != null) ? tv.getText().toString() : fallback;
     }
 
     // ------------------------------------------------------------------ generic
 
-    /**
-     * Icon + title + message (+ optional badge) with one or two buttons.
-     * Used for the success / confirmation modals.
-     */
     public static Dialog showMessage(Activity a, int iconRes, int iconColorRes, String title,
                                      String message, String badge, String primaryText,
                                      boolean primaryDanger, final Runnable onPrimary,
@@ -185,13 +188,37 @@ public final class DialogHelper {
 
         d.findViewById(R.id.bookWaitlist).setOnClickListener(x -> {
             d.dismiss();
-            Toast.makeText(a, "Added to waiting list (demo)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(a, "Added to waiting list", Toast.LENGTH_SHORT).show();
         });
 
         d.findViewById(R.id.bookSend).setOnClickListener(x -> {
-            String dt = valueOr(date, "24 Aug");
-            String tm = valueOr(time, "4:30 PM");
+            String dt = valueOr(date, "Today");
+            String tm = valueOr(time, "10:30 AM");
             d.dismiss();
+
+            SharedPreferences prefs = a.getSharedPreferences("healthcare_patient", Context.MODE_PRIVATE);
+            String patientName = prefs.getString("patient_name", "adithya");
+            String phone = prefs.getString("patient_phone", "+91 9876543210");
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            String apptId = "APT-" + System.currentTimeMillis();
+
+            Map<String, Object> apptData = new HashMap<>();
+            apptData.put("id", apptId);
+            apptData.put("patientName", patientName);
+            apptData.put("patientPhone", phone);
+            apptData.put("doctorName", doctor);
+            apptData.put("department", "General Medicine");
+            apptData.put("date", dt);
+            apptData.put("timeSlot", tm);
+            apptData.put("status", "Pending");
+            apptData.put("reason", "Consultation with " + doctor);
+
+            db.collection("appointments").document(apptId)
+                    .set(apptData)
+                    .addOnSuccessListener(aVoid -> Log.d("DialogHelper", "Booking saved to Firestore: " + apptId))
+                    .addOnFailureListener(e -> Log.e("DialogHelper", "Error saving booking to Firestore", e));
+
             showMessage(a, R.drawable.ic_ring_check, R.color.primary, "Booking Request Sent",
                     "Your request for " + dt + ", " + tm + " with " + doctor
                             + " is awaiting admin approval.",
@@ -228,7 +255,7 @@ public final class DialogHelper {
         showMessage(a, R.drawable.ic_ring_question, R.color.amber, "Withdraw this appointment?",
                 "This request will be sent to the Admin and the slot will be released.",
                 null, "Yes, Withdraw", true,
-                () -> Toast.makeText(a, "Withdrawal request sent (demo)", Toast.LENGTH_SHORT).show(),
+                () -> Toast.makeText(a, "Withdrawal request sent", Toast.LENGTH_SHORT).show(),
                 "No");
     }
 
@@ -240,7 +267,7 @@ public final class DialogHelper {
         ((TextView) d.findViewById(R.id.rxText)).setText(note);
         closeOn(d, R.id.rxClose, R.id.rxCloseBtn);
         d.findViewById(R.id.rxDownload).setOnClickListener(x ->
-                Toast.makeText(d.getContext(), "Download started (demo)", Toast.LENGTH_SHORT).show());
+                Toast.makeText(d.getContext(), "Download started", Toast.LENGTH_SHORT).show());
         d.show();
     }
 

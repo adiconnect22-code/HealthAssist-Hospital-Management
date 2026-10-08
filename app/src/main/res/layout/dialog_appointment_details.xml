@@ -154,25 +154,26 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutBottomButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-        <!-- Cancel Button: Hidden for Completed appointments -->
+        <!-- Left Side Button: Confirm Appt (for Pending status) -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelAppt"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:id="@+id/btnConfirmAppt"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
-            android:text="Cancel Appt"
-            android:textColor="#DC2626"
-            app:strokeColor="#DC2626"
-            app:strokeWidth="1.5dp" />
+            android:backgroundTint="#1D4ED8"
+            android:text="Confirm Appt"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
 
-        <!-- Add Prescription Button: Visible for Completed appointments -->
+        <!-- Add Prescription Button (for Completed status) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddPrescription"
             android:layout_width="0dp"
@@ -186,6 +187,22 @@
             android:visibility="gone"
             app:cornerRadius="12dp" />
 
+        <!-- Right Side Button: Cancel Appt (Outlined Red Button) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelAppt"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:text="Cancel Appt"
+            android:textColor="#DC2626"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#DC2626"
+            app:strokeWidth="1.5dp" />
+
+        <!-- Close Button (for Completed/Confirmed status) -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCloseDialog"
             android:layout_width="0dp"
@@ -195,6 +212,7 @@
             android:backgroundTint="#1D4ED8"
             android:text="Close"
             android:textColor="@color/white"
+            android:visibility="gone"
             app:cornerRadius="12dp" />
 
     </LinearLayout>

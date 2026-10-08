@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import com.example.healthcare.HeaderHelper;
 import com.example.healthcare.MainActivity;
 import com.example.healthcare.R;
-import com.example.healthcare.appointment.PrescriptionNotesFragment;
 
 public class NotificationsFragment extends Fragment {
 
@@ -30,25 +29,24 @@ public class NotificationsFragment extends Fragment {
         LinearLayout today = v.findViewById(R.id.listToday);
         LinearLayout yesterday = v.findViewById(R.id.listYesterday);
 
-        add(inflater, today, R.drawable.ic_check_circle, "Appointment approved", "9:02 AM", false);
-        add(inflater, today, R.drawable.ic_arrow_up_circle, "Waitlist upgraded to confirmed", "8:40 AM", false);
+        if (today != null) {
+            today.removeAllViews();
+            add(inflater, today, R.drawable.ic_check_circle, "Welcome to Health Assist Hospital!", "Just now");
+        }
 
-        add(inflater, yesterday, R.drawable.ic_clock, "Reminder: visit tomorrow, 4:30 PM", "6:15 PM", false);
-        add(inflater, yesterday, R.drawable.ic_file, "New prescription uploaded", "3:20 PM", true);
-        add(inflater, yesterday, R.drawable.ic_clipboard_check, "Registration approved", "11:05 AM", false);
+        if (yesterday != null) {
+            yesterday.removeAllViews();
+            yesterday.setVisibility(View.GONE);
+        }
+
         return v;
     }
 
-    private void add(LayoutInflater inflater, LinearLayout parent, int icon, String title,
-                     String time, boolean opensPrescription) {
+    private void add(LayoutInflater inflater, LinearLayout parent, int icon, String title, String time) {
         View item = inflater.inflate(R.layout.item_notification, parent, false);
         ((ImageView) item.findViewById(R.id.nIcon)).setImageResource(icon);
         ((TextView) item.findViewById(R.id.nTitle)).setText(title);
         ((TextView) item.findViewById(R.id.nTime)).setText(time);
-        if (opensPrescription) {
-            item.setOnClickListener(x ->
-                    ((MainActivity) requireActivity()).navigateTo(new PrescriptionNotesFragment()));
-        }
         parent.addView(item);
     }
 

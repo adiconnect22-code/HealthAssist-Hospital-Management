@@ -92,15 +92,40 @@
                             android:contentDescription="Admin Profile"
                             android:src="@drawable/ic_profile" />
 
-                        <ImageView
-                            android:id="@+id/imgNotification"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                        <RelativeLayout
+                            android:id="@+id/layoutNotificationBell"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:layout_marginStart="4dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="8dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_notification" />
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:id="@+id/imgNotification"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_centerInParent="true"
+                                android:contentDescription="@string/app_name"
+                                android:src="@drawable/ic_notification" />
+
+                            <TextView
+                                android:id="@+id/tvNotificationBadge"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginEnd="2dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@drawable/bg_circle_avatar"
+                                android:backgroundTint="#EF4444"
+                                android:gravity="center"
+                                android:text="1"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+                        </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
 

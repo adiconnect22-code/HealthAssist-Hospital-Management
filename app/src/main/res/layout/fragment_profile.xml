@@ -23,76 +23,70 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/tvProfileAvatar"
                 android:layout_width="76dp"
                 android:layout_height="76dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bg_circle_avatar"
                 android:gravity="center"
-                android:text="AR"
+                android:text="AD"
                 android:textColor="@color/primary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvProfileName"
                 style="@style/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Name: Asha Rao" />
+                android:text="Name: adithya" />
 
             <TextView
-                android:id="@+id/pDob"
+                android:id="@+id/tvProfileDob"
                 style="@style/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="DOB: 12/05/1996" />
+                android:text="DOB: 12/05/1998" />
 
             <TextView
-                android:id="@+id/pGender"
+                android:id="@+id/tvProfileGender"
                 style="@style/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Gender: Female" />
+                android:text="Gender: Male" />
 
             <TextView
-                android:id="@+id/pMobile"
+                android:id="@+id/tvProfileMobile"
                 style="@style/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Mobile: 98xxxxxxx0" />
+                android:text="Mobile: +91 9876543210" />
 
             <TextView
-                android:id="@+id/pEmail"
+                android:id="@+id/tvProfileEmail"
                 style="@style/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Email: asha@mail.com" />
+                android:text="Email: adithya@mail.com" />
 
             <TextView
-                android:id="@+id/pBlood"
+                android:id="@+id/tvProfileBlood"
                 style="@style/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Blood Group: O+" />
 
-            <TextView
-                android:id="@+id/pPref"
-                style="@style/Input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Preference: Female Doctor, Evening slots" />
-
             <FrameLayout
                 android:id="@+id/rowChangePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="14dp"
                 android:clickable="true"
                 android:focusable="true">
 
@@ -116,7 +110,7 @@
                 style="@style/BtnPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="16dp"
                 android:text="Save Changes" />
 
         </LinearLayout>

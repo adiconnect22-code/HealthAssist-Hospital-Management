@@ -22,6 +22,8 @@ import com.example.healthcare.HeaderHelper;
 import com.example.healthcare.MainActivity;
 import com.example.healthcare.R;
 import com.example.healthcare.appointment.DoctorProfileFragment;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,12 +160,59 @@ public class FindDoctorFragment extends Fragment {
 
     private void buildDoctorCards(LayoutInflater inflater) {
         final MainActivity main = (MainActivity) requireActivity();
-        for (final DoctorData d : DoctorData.ALL) {
-            View card = inflateDoctorCard(inflater, doctorList, d,
-                    d.dept + " \u00B7 " + d.years + " yrs exp", d.available);
-            card.setTag(d);
-            card.setOnClickListener(x -> main.navigateTo(DoctorProfileFragment.newInstance(d.name)));
-            doctorList.addView(card);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("doctors")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null || value == null || value.isEmpty()) {
+                        populateDefaultDoctors(inflater, main);
+                        return;
+                    }
+
+                    if (doctorList != null) {
+                        doctorList.removeAllViews();
+                        for (DocumentSnapshot doc : value.getDocuments()) {
+                            String name = doc.getString("name");
+                            String dept = doc.getString("department");
+                            String spec = doc.getString("specialization");
+                            Boolean unavail = doc.getBoolean("unavailable");
+
+                            if (name == null || name.isEmpty()) continue;
+
+                            String initials = "DR";
+                            String cleanName = name.replace("Dr.", "").replace("Dr", "").trim();
+                            String[] parts = cleanName.split("\\s+");
+                            if (parts.length >= 2) {
+                                initials = (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
+                            } else if (cleanName.length() >= 2) {
+                                initials = cleanName.substring(0, 2).toUpperCase();
+                            }
+
+                            DoctorData d = DoctorData.find(name);
+                            String meta = (dept != null ? dept : "General") + " \u00B7 " + (spec != null ? spec : "Specialist");
+                            boolean avail = (unavail == null || !unavail);
+
+                            View card = inflateDoctorCard(inflater, doctorList, d, meta, avail);
+                            ((TextView) card.findViewById(R.id.docInitials)).setText(initials);
+                            ((TextView) card.findViewById(R.id.docName)).setText(name);
+
+                            card.setTag(d);
+                            card.setOnClickListener(x -> main.navigateTo(DoctorProfileFragment.newInstance(name)));
+                            doctorList.addView(card);
+                        }
+                    }
+                });
+    }
+
+    private void populateDefaultDoctors(LayoutInflater inflater, MainActivity main) {
+        if (doctorList != null) {
+            doctorList.removeAllViews();
+            for (final DoctorData d : DoctorData.ALL) {
+                View card = inflateDoctorCard(inflater, doctorList, d,
+                        d.dept + " \u00B7 " + d.years + " yrs exp", d.available);
+                card.setTag(d);
+                card.setOnClickListener(x -> main.navigateTo(DoctorProfileFragment.newInstance(d.name)));
+                doctorList.addView(card);
+            }
         }
     }
 
@@ -172,10 +221,10 @@ public class FindDoctorFragment extends Fragment {
         for (int i = 0; i < doctorList.getChildCount(); i++) {
             View card = doctorList.getChildAt(i);
             DoctorData d = (DoctorData) card.getTag();
-            boolean deptOk = selectedDept.equals("All") || selectedDept.equals(d.dept);
+            boolean deptOk = selectedDept.equals("All") || (d != null && d.dept != null && selectedDept.equals(d.dept));
             boolean textOk = q.isEmpty()
-                    || d.name.toLowerCase().contains(q)
-                    || d.dept.toLowerCase().contains(q);
+                    || (d != null && d.name != null && d.name.toLowerCase().contains(q))
+                    || (d != null && d.dept != null && d.dept.toLowerCase().contains(q));
             card.setVisibility(deptOk && textOk ? View.VISIBLE : View.GONE);
         }
     }
@@ -209,8 +258,10 @@ public class FindDoctorFragment extends Fragment {
     private View inflateDoctorCard(LayoutInflater inflater, ViewGroup parent, DoctorData d,
                                    String meta, boolean available) {
         View card = inflater.inflate(R.layout.item_doctor_card, parent, false);
-        ((TextView) card.findViewById(R.id.docInitials)).setText(d.initials);
-        ((TextView) card.findViewById(R.id.docName)).setText(d.name);
+        if (d != null) {
+            ((TextView) card.findViewById(R.id.docInitials)).setText(d.initials);
+            ((TextView) card.findViewById(R.id.docName)).setText(d.name);
+        }
         ((TextView) card.findViewById(R.id.docMeta)).setText(meta);
 
         TextView badge = card.findViewById(R.id.docBadge);

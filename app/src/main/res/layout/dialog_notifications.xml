@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="Notifications"
+            android:text="Notifications &amp; Booking Requests"
             android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -34,21 +34,34 @@
             app:tint="@color/text_secondary" />
     </RelativeLayout>
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/layoutNotificationContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="• Emergency Visit scheduled: Patient Amit Sharma at 04:30 PM\n• New Doctor Added: Dr. David Lee joined Orthopedics\n• Report Ready: Monthly Revenue report generated"
-        android:textColor="@color/text_primary"
-        android:textSize="14sp" />
+        android:orientation="vertical">
+
+        <!-- Dynamic Live Notification Items Populated Here -->
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvEmptyNotificationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="24dp"
+        android:text="No unread notifications"
+        android:textColor="@color/text_hint"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDoneNotifications"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/teal_primary"
-        android:text="@string/btn_done"
+        android:backgroundTint="#1D4ED8"
+        android:text="Mark All as Read &amp; Close"
         android:textColor="@color/white"
         app:cornerRadius="12dp" />
 

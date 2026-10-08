@@ -3,13 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg"
+    android:background="@color/bg_main"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/include_header"
+    <!-- Top Admin Header -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="70dp"
+        android:background="#1E40AF"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_health_assist_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Admin Portal Login"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,34 +42,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="20dp">
 
+            <!-- Administrator Shield Badge -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_badge_green"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_status_badge"
+                android:backgroundTint="#E0F2FE"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="12dp"
-                android:paddingTop="6dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="6dp">
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:src="@drawable/ic_shield_check"
-                    app:tint="@color/primary" />
+                    app:tint="#1D4ED8" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="ADMINISTRATOR PORTAL"
-                    android:textColor="@color/primary"
+                    android:layout_marginStart="8dp"
+                    android:text="AUTHORIZED ADMINISTRATOR PORTAL"
+                    android:textColor="#1D4ED8"
                     android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -57,26 +78,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Admin Username / Email"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/admin_text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etAdminUser"
-                style="@style/Input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:hint="admin@hospital.com"
-                android:inputType="textEmailAddress"
-                android:singleLine="true" />
+                android:background="@drawable/bg_card_rounded"
+                android:hint="Admin"
+                android:inputType="text"
+                android:paddingHorizontal="14dp"
+                android:textColor="@color/admin_text_primary"
+                android:textColorHint="@color/text_hint"
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Password"
-                android:textColor="@color/text_primary"
+                android:layout_marginTop="16dp"
+                android:text="Admin Password"
+                android:textColor="@color/admin_text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -87,42 +111,28 @@
 
                 <EditText
                     android:id="@+id/etAdminPassword"
-                    style="@style/Input"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="••••••••"
+                    android:layout_height="52dp"
+                    android:background="@drawable/bg_card_rounded"
+                    android:hint="Admin123"
                     android:inputType="textPassword"
+                    android:paddingStart="14dp"
                     android:paddingEnd="48dp"
-                    android:singleLine="true" />
+                    android:textColor="@color/admin_text_primary"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/btnEye"
                     android:layout_width="44dp"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:layout_gravity="end"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="12dp"
+                    android:contentDescription="Toggle Password Visibility"
                     android:src="@drawable/ic_eye"
-                    app:tint="@color/text_secondary" />
+                    app:tint="@color/admin_text_secondary" />
             </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Hospital Passcode / Key"
-                android:textColor="@color/text_primary"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/etAccessKey"
-                style="@style/Input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="HOSP-2026"
-                android:inputType="textCapCharacters"
-                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/tvForgot"
@@ -132,36 +142,40 @@
                 android:layout_marginTop="14dp"
                 android:padding="4dp"
                 android:text="Forgot Admin Password?"
-                android:textColor="@color/primary"
+                android:textColor="#1D4ED8"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogin"
-                style="@style/BtnPrimary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Login as Admin" />
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#1D4ED8"
+                android:text="Login as Admin"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_divider" />
+                android:layout_marginTop="24dp"
+                android:background="@color/divider_color" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Not an Admin? "
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/admin_text_secondary"
                     android:textSize="14sp" />
 
                 <TextView
@@ -169,10 +183,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Patient Login"
-                    android:textColor="@color/primary"
+                    android:textColor="#1D4ED8"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

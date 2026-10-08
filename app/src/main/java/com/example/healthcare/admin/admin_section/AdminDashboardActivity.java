@@ -38,7 +38,7 @@ import java.util.List;
 
 /**
  * Hospital Admin Dashboard Activity located in 'admin_section' package folder.
- * Synchronizes real-time Hospital Stats, Donut Chart, and Doctor counts with Firebase Cloud Firestore.
+ * Synchronizes real-time Hospital Stats, Notification Bell Counter, and Doctor counts with Firebase Cloud Firestore.
  */
 public class AdminDashboardActivity extends AppCompatActivity implements RecentAppointmentAdapter.OnRecentAppointmentClickListener {
 
@@ -46,6 +46,8 @@ public class AdminDashboardActivity extends AppCompatActivity implements RecentA
     private TextView tvHeaderSubtitle;
     private ImageView imgProfile;
     private ImageView imgNotification;
+    private TextView tvNotificationBadge;
+    private View layoutNotificationBell;
 
     private View cardPatients;
     private View cardDoctors;
@@ -73,6 +75,7 @@ public class AdminDashboardActivity extends AppCompatActivity implements RecentA
     private FirebaseFirestore db;
     private ListenerRegistration doctorsStatListener;
     private ListenerRegistration apptsOverviewListener;
+    private ListenerRegistration pendingNotificationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,9 @@ public class AdminDashboardActivity extends AppCompatActivity implements RecentA
         if (apptsOverviewListener != null) {
             apptsOverviewListener.remove();
         }
+        if (pendingNotificationListener != null) {
+            pendingNotificationListener.remove();
+        }
     }
 
     private void initViews() {
@@ -122,6 +128,8 @@ public class AdminDashboardActivity extends AppCompatActivity implements RecentA
         tvHeaderSubtitle = findViewById(R.id.tvHeaderSubtitle);
         imgProfile = findViewById(R.id.imgProfile);
         imgNotification = findViewById(R.id.imgNotification);
+        tvNotificationBadge = findViewById(R.id.tvNotificationBadge);
+        layoutNotificationBell = findViewById(R.id.layoutNotificationBell);
 
         cardPatients = findViewById(R.id.cardPatients);
         cardDoctors = findViewById(R.id.cardDoctors);
@@ -186,9 +194,18 @@ public class AdminDashboardActivity extends AppCompatActivity implements RecentA
             });
         }
 
-        imgNotification.setOnClickListener(v ->
-                NotificationListDialog.newInstance().show(getSupportFragmentManager(), "NotificationDialog")
-        );
+        View.OnClickListener openNotificationListener = v -> {
+            NotificationListDialog dialog = NotificationListDialog.newInstance();
+            dialog.setOnDismissNotificationListener(() -> {
+                if (tvNotificationBadge != null) {
+                    tvNotificationBadge.setVisibility(View.GONE);
+                }
+            });
+            dialog.show(getSupportFragmentManager(), "NotificationDialog");
+        };
+
+        if (imgNotification != null) imgNotification.setOnClickListener(openNotificationListener);
+        if (layoutNotificationBell != null) layoutNotificationBell.setOnClickListener(openNotificationListener);
 
         cardPatients.setOnClickListener(v ->
                 PatientsListDialog.newInstance().show(getSupportFragmentManager(), "PatientsDialog")
@@ -297,6 +314,29 @@ public class AdminDashboardActivity extends AppCompatActivity implements RecentA
                         });
                     }
                 });
+
+        pendingNotificationListener = db.collection("appointments")
+                .whereEqualTo("status", "Pending")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.e("AdminDashboard", "Error fetching pending notifications", error);
+                        return;
+                    }
+
+                    if (value != null) {
+                        int pendingRequests = value.size();
+                        runOnUiThread(() -> {
+                            if (tvNotificationBadge != null) {
+                                if (pendingRequests > 0) {
+                                    tvNotificationBadge.setText(String.valueOf(pendingRequests));
+                                    tvNotificationBadge.setVisibility(View.VISIBLE);
+                                } else {
+                                    tvNotificationBadge.setVisibility(View.GONE);
+                                }
+                            }
+                        });
+                    }
+                });
     }
 
     private void fetchAppointmentsOverviewFromDatabase() {
@@ -371,10 +411,6 @@ public class AdminDashboardActivity extends AppCompatActivity implements RecentA
                         });
                     }
                 });
-    }
-
-    private void fetchRecentAppointmentsFromDatabase() {
-        // Handled in real-time by fetchAppointmentsOverviewFromDatabase
     }
 
     private void checkEmptyState() {
